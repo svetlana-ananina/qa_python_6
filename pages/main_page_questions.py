@@ -38,7 +38,8 @@ class MainPageQuestions:
 
     def wait_for_load_answer(self, index):
         # $x("(.//div[@class='accordion__panel'])[8]")
-        xpath = f"(.//div[@class='accordion__panel'])[{index+1}]"
+        #xpath = f"(.//div[@class='accordion__panel'])[{index+1}]"
+        xpath = locators.MAIN_PAGE_FAQ_ITEM_XPATH.format(index+1)
         if data._debug:
             print(f'XPATH = "{xpath}"')
         WebDriverWait(self.driver, 10).until(
