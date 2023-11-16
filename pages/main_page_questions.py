@@ -25,7 +25,8 @@ class MainPageQuestions:
 
     # Кликнуть согласие с куками
     def click_accept_cookies_button(self):
-        cookie_button = self.driver.find_element(*locators.MAIN_PAGE_COOKIE_BUTTON)
+        #cookie_button = self.driver.find_element(*locators.MAIN_PAGE_COOKIE_BUTTON)
+        cookie_button = self.driver.find_element(*locators.BASE_PAGE_COOKIE_BUTTON)
         if cookie_button:
             cookie_button.click()
 
@@ -66,7 +67,8 @@ class MainPageQuestions:
 
     def click_footer_order_button(self):
         self.driver.find_element(*locators.MAIN_PAGE_FOOTER_ORDER_BUTTON).click()
-    def wait_for_open_order_page(self):
+
+    def wait_for_open_main_page(self):
         WebDriverWait(self.driver, 10).until(
-            expected_conditions.url_to_be(data.URLS.ORDER_PAGE_URL))
+            expected_conditions.url_to_be(data.URLS.MAIN_PAGE_URL))
 

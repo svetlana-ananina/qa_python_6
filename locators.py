@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 
 
 MAIN_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
+BASE_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
+
 MAIN_PAGE_FAQ_LIST = [By.CLASS_NAME, "accordion"]
 MAIN_PAGE_FAQ_BUTTONS = [By.CLASS_NAME, "accordion__button"]
 MAIN_PAGE_FAQ_ITEMS = [By.XPATH, ".//div[@class='accordion__panel']/p"]
