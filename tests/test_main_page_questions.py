@@ -22,6 +22,9 @@ class TestMainPageQuestions:
         # создали драйвер для браузера Chrome
         self.driver = webdriver.Firefox()
 
+        # создаем объект класса Главная страница с разделом 'Вопросы о важном'
+        self.main_page = MainPageQuestions(self.driver)
+
         yield
         # закрываем драйвер
         self.driver.quit()
@@ -32,16 +35,19 @@ class TestMainPageQuestions:
     def test_faq_answers(self, setup_driver, index):
 
         # переходим на страницу тестового приложения
-        self.driver.get(data.URLS.MAIN_PAGE_URL)
+        #self.driver.get(data.URLS.MAIN_PAGE_URL)
 
         # создаем объект класса Главная страница с разделом 'Вопросы о важном'
-        self.main_page = MainPageQuestions(self.driver)
+        #self.main_page = MainPageQuestions(self.driver)
+
+        # Открываем Главную страницу
+        self.main_page.open_main_page()
 
         # ждем загрузки главной страницы
         self.main_page.wait_for_load_main_page()
 
         # кликаем согласие с куки
-        self.main_page.click_accept_cookies_buttons()
+        self.main_page.click_accept_cookies_button()
 
         # прокручиваем страницу до
         self.main_page.scroll_to_faq_list()

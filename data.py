@@ -1,16 +1,10 @@
 class URLS:
     MAIN_PAGE_URL = 'https://qa-scooter.praktikum-services.ru/'
+    ORDER_PAGE_URL = 'https://qa-scooter.praktikum-services.ru/order'
+    LOGO_URL = "https://dzen.ru/?yredirect=true"
 
 
 class DATA:
-    #FAQ1_TEXT = 'Сколько это стоит? И как оплатить?'
-    #FAQ2_TEXT = 'Хочу сразу несколько самокатов! Так можно?'
-    #FAQ3_TEXT = 'Как рассчитывается время аренды?'
-    #FAQ4_TEXT = 'Можно ли заказать самокат прямо на сегодня?'
-    #FAQ5_TEXT = 'Можно ли продлить заказ или вернуть самокат раньше?'
-    #FAQ6_TEXT = 'Вы привозите зарядку вместе с самокатом?'
-    #FAQ7_TEXT = 'Можно ли отменить заказ?'
-    #FAQ8_TEXT = 'Я живу за МКАДом, привезёте?'
 
     QUESTIONS_TEXT = [
         'Сколько это стоит? И как оплатить?',
