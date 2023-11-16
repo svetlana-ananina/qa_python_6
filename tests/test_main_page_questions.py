@@ -26,20 +26,13 @@ class TestMainPageQuestions:
         self.main_page = MainPageQuestions(self.driver)
 
         yield
-        # закрываем драйвер
+        # закрываем драйвер после использования
         self.driver.quit()
 
 
     @pytest.mark.parametrize('index', [0, 1, 2, 3, 4, 5, 6, 7])
     #@pytest.mark.parametrize('index', [7])
     def test_faq_answers(self, setup_driver, index):
-
-        # переходим на страницу тестового приложения
-        #self.driver.get(data.URLS.MAIN_PAGE_URL)
-
-        # создаем объект класса Главная страница с разделом 'Вопросы о важном'
-        #self.main_page = MainPageQuestions(self.driver)
-
         # Открываем Главную страницу
         self.main_page.open_main_page()
 

@@ -54,19 +54,13 @@ class MainPageQuestions:
             expected_conditions.visibility_of_element_located((By.XPATH, xpath)))
 
     # Методы для работы со страницей заказа
-    def scroll_to_header_order_button(self):
-        element = self.driver.find_element(*locators.MAIN_PAGE_HEADER_ORDER_BUTTON)
+    # методы работы с двумя кнопками Заказать на Главной странице
+    def scroll_to_order_button(self, locator):
+        element = self.driver.find_element(*locator)
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
-    def scroll_to_footer_order_button(self):
-        element = self.driver.find_element(*locators.MAIN_PAGE_FOOTER_ORDER_BUTTON)
-        self.driver.execute_script("arguments[0].scrollIntoView();", element)
-
-    def click_header_order_button(self):
-        self.driver.find_element(*locators.MAIN_PAGE_HEADER_ORDER_BUTTON).click()
-
-    def click_footer_order_button(self):
-        self.driver.find_element(*locators.MAIN_PAGE_FOOTER_ORDER_BUTTON).click()
+    def click_order_button(self, locator):
+        self.driver.find_element(*locator).click()
 
     def wait_for_open_main_page(self):
         WebDriverWait(self.driver, 10).until(

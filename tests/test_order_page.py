@@ -36,10 +36,13 @@ class TestOrderPage:
         self.driver.quit()
 
 
-    def test_main_page_header_order_button(self, setup_driver):
-        """ Проверяем верхнюю кнопку Заказать на Главной странице """
-        # переходим на страницу тестового приложения
-        self.driver.get(data.URLS.MAIN_PAGE_URL)
+    @pytest.mark.parametrize('locator', [locators.MAIN_PAGE_HEADER_ORDER_BUTTON,
+                                         locators.MAIN_PAGE_FOOTER_ORDER_BUTTON])
+    def test_main_page_order_button(self, setup_driver, locator):
+        """ Проверяем верхнюю и нижнюю кнопку Заказать на Главной странице """
+        # открываем Главную страницу
+        #self.driver.get(data.URLS.MAIN_PAGE_URL)
+        self.main_page.open_main_page()
 
         # ждем загрузки главной страницы
         self.main_page.wait_for_load_main_page()
@@ -47,40 +50,13 @@ class TestOrderPage:
         # кликаем согласие с куками
         self.main_page.click_accept_cookies_button()
 
-        # прокручиваем страницу до верхней кнопки Заказать
-        self.main_page.scroll_to_header_order_button()
-
-        # кликаем верхнюю кнопку Заказать
-        self.main_page.click_header_order_button()
+        # прокручиваем страницу до кнопки Заказать
+        self.main_page.scroll_to_order_button(locator)
 
         if data._debug: time.sleep(5)
 
-        # ждем перехода на страницу заказа
-        self.order_page.wait_for_open_order_page()
-
-        # проверяем, что открылся URL страницы заказа
-        assert self.driver.current_url == data.URLS.ORDER_PAGE_URL
-
-
-
-    def test_main_page_footer_order_button(self, setup_driver):
-        """ Проверяем нижнюю кнопку Заказать на Главной странице """
-        # переходим на страницу тестового приложения
-        self.driver.get(data.URLS.MAIN_PAGE_URL)
-
-        # ждем загрузки главной страницы
-        self.main_page.wait_for_load_main_page()
-
-        # кликаем согласие с куками
-        self.main_page.click_accept_cookies_button()
-
-        # прокручиваем страницу до нижней кнопки Заказать
-        self.main_page.scroll_to_footer_order_button()
-
-        if data._debug: time.sleep(3)
-
         # кликаем нижнюю кнопку Заказать
-        self.main_page.click_footer_order_button()
+        self.main_page.click_order_button(locator)
 
         if data._debug: time.sleep(3)
 
@@ -117,6 +93,7 @@ class TestOrderPage:
 
         # проверяем, что открылся URL Главной страницы
         assert self.driver.current_url == data.URLS.MAIN_PAGE_URL
+
 
     def test_order_page_logo_button(self, setup_driver):
         """ Проверяем кнопку Яндекс в хедере страницы заказа """
