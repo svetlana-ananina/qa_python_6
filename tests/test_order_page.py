@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
@@ -135,3 +136,35 @@ class TestOrderPage:
         if data._debug: time.sleep(3)
 
         assert self.driver.current_url == data.URLS.DZEN_URL
+
+
+    @pytest.mark.parametrize('user_info', [data.DATA.INFO_USER_1])
+    def test_order_page_order_placement(self, setup_driver, user_info):
+        """ Проверяем кнопку Самокат в хедере страницы заказа """
+        # открываем страницу заказа по URL
+        self.driver.get(data.URLS.ORDER_PAGE_URL)
+
+        # ждем загрузки страницы заказа
+        self.order_page.wait_for_load_order_page()
+
+        # кликаем согласие с куки
+        self.order_page.click_accept_cookies_button()
+
+        # Получаем список полей ввода
+        input_fields = self.order_page.get_input_fields()
+
+        if data._debug:
+            print(f'len = {len(input_fields)}')
+        assert len(input_fields) == 6
+
+        for i in {0, 1, 2, 4}:
+            self.order_page.set_field_value(input_fields[i+1], user_info[i])
+
+        self.order_page.select_station(4)
+
+        if data._debug: time.sleep(5)
+
+        self.order_page.click_next_button()
+
+        if data._debug: time.sleep(5)
+

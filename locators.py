@@ -18,7 +18,14 @@ MAIN_PAGE_ORDER_BUTTONS = [By.XPATH, ".//button[text()='Заказать']"]
 MAIN_PAGE_HEADER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[1]"]
 MAIN_PAGE_FOOTER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[2]"]
 
-ORDER_PAGE_ORDER_BUTTON = [By.XPATH, ".//button[text()='Далее']"]
 ORDER_PAGE_SCOOTER_BUTTON = [By.XPATH, ".//a[@href='/']"]
 ORDER_PAGE_LOGO_BUTTON = [By.XPATH, ".//a[@href='//yandex.ru']"]
+
+ORDER_PAGE_NEXT_BUTTON = [By.XPATH, ".//button[text()='Далее']"]
+ORDER_PAGE_INPUT_FIELDS = [By.TAG_NAME, "input"]
+
+ORDER_PAGE_STATION_FIELD = [By.XPATH, ".//div[@class='select-search']"]
+ORDER_PAGE_STATION_LIST = [By.XPATH, ".//div[@class='select-search__select']"]
+ORDER_PAGE_STATION_BUTTON = [By.XPATH, ".//ul/li/button[@value='4']"]
+ORDER_PAGE_STATION_VALUE = [By.XPATH, ".//div[@class='select-search__value']/input"]
 
