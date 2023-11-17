@@ -18,14 +18,29 @@ MAIN_PAGE_ORDER_BUTTONS = [By.XPATH, ".//button[text()='Заказать']"]
 MAIN_PAGE_HEADER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[1]"]
 MAIN_PAGE_FOOTER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[2]"]
 
+# Страница заказа
+# Хедер
 ORDER_PAGE_SCOOTER_BUTTON = [By.XPATH, ".//a[@href='/']"]
 ORDER_PAGE_LOGO_BUTTON = [By.XPATH, ".//a[@href='//yandex.ru']"]
 
+# 1-я страница
 ORDER_PAGE_NEXT_BUTTON = [By.XPATH, ".//button[text()='Далее']"]
-ORDER_PAGE_INPUT_FIELDS = [By.TAG_NAME, "input"]
-
+#ORDER_PAGE_INPUT_FIELDS = [By.TAG_NAME, "input"]
+ORDER_PAGE_INPUT_FIELDS = [By.XPATH, ".//input"]
+#
 ORDER_PAGE_STATION_FIELD = [By.XPATH, ".//div[@class='select-search']"]
-ORDER_PAGE_STATION_LIST = [By.XPATH, ".//div[@class='select-search__select']"]
-ORDER_PAGE_STATION_BUTTON = [By.XPATH, ".//ul/li/button[@value='4']"]
+ORDER_PAGE_SELECT_STATION_LIST = [By.XPATH, ".//div[@class='select-search__select']"]
+#
+ORDER_PAGE_SELECT_STATION_XPATH = ".//ul/li/button[@value='{}']"
+# Поле с выбранной станции для проверки
 ORDER_PAGE_STATION_VALUE = [By.XPATH, ".//div[@class='select-search__value']/input"]
+
+# 2-я страница
+ORDER_PAGE_BACK_BUTTON = [By.XPATH, ".//button[text()='Назад']"]
+ORDER_PAGE_DATE_PICKER = [By.XPATH, "(.//input)[2]"]
+#ORDER_PAGE_RENT_TIME = [By.XPATH, ".//div[@class='Dropdown-root']"]
+ORDER_PAGE_RENT_TIME = [By.XPATH, ".//div[@class='Dropdown-control']"]              # ??? ошибка
+ORDER_PAGE_RENT_TIME_LIST = [By.XPATH, ".//div[@class='Dropdown-menu']"]
+#ORDER_PAGE_RENT_TIME_ITEM = [By.XPATH, "(.//div[@class='Dropdown-option'])[1]"]
+ORDER_PAGE_RENT_TIME_ITEM = [By.XPATH, "(.//div[@class='Dropdown-option'])[{}]"]
 

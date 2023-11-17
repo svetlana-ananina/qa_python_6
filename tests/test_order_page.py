@@ -138,9 +138,11 @@ class TestOrderPage:
         assert self.driver.current_url == data.URLS.DZEN_URL
 
 
-    @pytest.mark.parametrize('user_info', [data.DATA.INFO_USER_1])
+    @pytest.mark.parametrize('user_info',
+                             [data.DATA.INFO_USER_1])
+#                              [data.DATA.INFO_USER_1, data.DATA.INFO_USER_2])
     def test_order_page_order_placement(self, setup_driver, user_info):
-        """ Проверяем кнопку Самокат в хедере страницы заказа """
+        """ Проверяем оформление заказа """
         # открываем страницу заказа по URL
         self.driver.get(data.URLS.ORDER_PAGE_URL)
 
@@ -150,21 +152,47 @@ class TestOrderPage:
         # кликаем согласие с куки
         self.order_page.click_accept_cookies_button()
 
-        # Получаем список полей ввода
+        # получаем список полей ввода
         input_fields = self.order_page.get_input_fields()
 
         if data._debug:
             print(f'len = {len(input_fields)}')
+        # Проверяем, что на странице 6 полей ввода (1-е поле - статус заказа)
         assert len(input_fields) == 6
 
+        # заполняем текстовые поля, кроме станции метро
         for i in {0, 1, 2, 4}:
             self.order_page.set_field_value(input_fields[i+1], user_info[i])
 
-        self.order_page.select_station(4)
+        # выбираем станцию метро из списка по индексу
+        self.order_page.select_station(user_info[5])
 
-        if data._debug: time.sleep(5)
-
+        # кликаем кнопку Дальше
         self.order_page.click_next_button()
 
-        if data._debug: time.sleep(5)
+        # ждем перехода на 2-ю страницу - кнопку Назад
+        self.order_page.wait_for_load_back_button()
 
+        # получаем список полей ввода
+        input_fields = self.order_page.get_input_fields()
+
+        if data._debug:
+            print(f'len = {len(input_fields)}')
+        # Проверяем, что на странице 6 полей ввода (1-е поле - статус заказа)
+        assert len(input_fields) == 5
+
+        #self.order_page.set_field_value(input_fields[1], '01.12.2023')
+        #self.order_page.set_value(locators.ORDER_PAGE_DATE_PICKER, data.DATA.ORDER_INF0_1[0])
+        self.order_page.set_value(locators.ORDER_PAGE_DATE_PICKER, '01.12.2023')
+
+        if data._debug:
+            #value = self.order_page.get_field_value(([By.XPATH, "(.//input)[2]"]))
+            value = self.order_page.get_field_value(locators.ORDER_PAGE_DATE_PICKER)
+            print(f'field.value = "{value}"')
+
+        # выбираем срок аренды по индексу (от 1 до 7 - 1-7 суток)
+        #self.order_page.select_rent_time(data.DATA.ORDER_INF0_1[1])
+        self.order_page.select_rent_time(1)
+
+        if data._debug:
+            time.sleep(5)
