@@ -54,12 +54,12 @@ class TestOrderPage:
         # прокручиваем страницу до кнопки Заказать
         self.main_page.scroll_to_order_button(locator)
 
-        if data._debug: time.sleep(5)
+        #if data._debug: time.sleep(5)
 
         # кликаем нижнюю кнопку Заказать
         self.main_page.click_order_button(locator)
 
-        if data._debug: time.sleep(3)
+        #if data._debug: time.sleep(3)
 
         # ждем перехода на страницу заказа
         self.order_page.wait_for_open_order_page()
@@ -79,7 +79,7 @@ class TestOrderPage:
         # кликаем согласие с куки
         self.order_page.click_accept_cookies_button()
 
-        if data._debug: time.sleep(3)
+        #if data._debug: time.sleep(3)
 
         # кликаем кнопку Самокат
         self.order_page.click_scooter_button()
@@ -90,7 +90,7 @@ class TestOrderPage:
         # ждем загрузки главной страницы
         self.main_page.wait_for_load_main_page()
 
-        if data._debug: time.sleep(3)
+        #if data._debug: time.sleep(3)
 
         # проверяем, что открылся URL Главной страницы
         assert self.driver.current_url == data.URLS.MAIN_PAGE_URL
@@ -109,7 +109,7 @@ class TestOrderPage:
 
         if data._debug:
             print(f'len(self.driver.window_handles) = {len(self.driver.window_handles)}')
-        if data._debug: time.sleep(3)
+        #if data._debug: time.sleep(3)
 
         # кликаем кнопку Яндекс
         self.order_page.click_logo_button()
@@ -133,15 +133,21 @@ class TestOrderPage:
         if data._debug:
             print(f'current_url = "{self.driver.current_url}"')
 
-        if data._debug: time.sleep(3)
+        #if data._debug: time.sleep(3)
 
         assert self.driver.current_url == data.URLS.DZEN_URL
 
 
-    @pytest.mark.parametrize('user_info',
-                             [data.DATA.INFO_USER_1])
-#                              [data.DATA.INFO_USER_1, data.DATA.INFO_USER_2])
-    def test_order_page_order_placement(self, setup_driver, user_info):
+    @pytest.mark.parametrize('user_info, order_info',
+                              [data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1])
+    #ORDER_INF0_1 = [
+    #    '01.12.2023',           # Когда привезти самокат
+    #    0,                      # Срок аренды - 1 сутки (индекс от 0 до 6)
+    #    True,                   # Выбрать 1-й цвет
+    #    True,                   # Выбрать 2-й цвет
+    #    "Позвоните за полчаса"  # Комментарий для курьера
+    #]
+    def test_order_page_order_placement(self, setup_driver, user_info, order_info):
         """ Проверяем оформление заказа """
         # открываем страницу заказа по URL
         self.driver.get(data.URLS.ORDER_PAGE_URL)
@@ -173,26 +179,39 @@ class TestOrderPage:
         # ждем перехода на 2-ю страницу - кнопку Назад
         self.order_page.wait_for_load_back_button()
 
-        # получаем список полей ввода
+        # получаем список полей ввода: 5 (индексы 0-4)
+        #   0 - статус заказа
+        #   1 - дата доставки
+        #   2, 3 - цвет самоката
+        #   4 - комментарий для курьера
         input_fields = self.order_page.get_input_fields()
 
         if data._debug:
             print(f'len = {len(input_fields)}')
-        # Проверяем, что на странице 6 полей ввода (1-е поле - статус заказа)
+        # Проверяем, что на странице 5 полей ввода (1-е поле - статус заказа)
         assert len(input_fields) == 5
 
-        #self.order_page.set_field_value(input_fields[1], '01.12.2023')
-        #self.order_page.set_value(locators.ORDER_PAGE_DATE_PICKER, data.DATA.ORDER_INF0_1[0])
-        self.order_page.set_value(locators.ORDER_PAGE_DATE_PICKER, '01.12.2023')
+        # Вводим дату в поле 'Когда привезти самокат'
+        self.order_page.select_delivery_date()
+        #self.order_page.set_delivery_date('01.12.2023')
 
-        if data._debug:
-            #value = self.order_page.get_field_value(([By.XPATH, "(.//input)[2]"]))
-            value = self.order_page.get_field_value(locators.ORDER_PAGE_DATE_PICKER)
-            print(f'field.value = "{value}"')
+        # выбираем срок аренды по индексу (от 0 до 6 - 1-7 суток)
+        self.order_page.select_rent_time()
 
-        # выбираем срок аренды по индексу (от 1 до 7 - 1-7 суток)
-        #self.order_page.select_rent_time(data.DATA.ORDER_INF0_1[1])
-        self.order_page.select_rent_time(1)
+        # Выбираем цвет самоката (поля ввода с индексами 2 и 3)
+        #input_fields[3].click()                                # выбираем цвет 'Черный жемчуг'
+        #input_fields[4].click()                                # выбираем цвет 'Серая безысходность'
+        self.order_page.click_page_element(input_fields[2])     # выбираем цвет 'Черный жемчуг'
+        self.order_page.click_page_element(input_fields[3])     # выбираем цвет 'Серая безысходность'
+
+        # Вводим комментарий для курьера (поле ввода с индексом 4)
+        self.order_page.set_field_value(input_fields[4], "Позвоните за полчаса")
 
         if data._debug:
             time.sleep(5)
+
+        self.order_page.click_element(locators.ORDER_PAGE_ORDER_BUTTON)
+
+        if data._debug:
+            time.sleep(5)
+
