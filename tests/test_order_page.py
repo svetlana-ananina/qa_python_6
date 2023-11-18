@@ -138,8 +138,10 @@ class TestOrderPage:
         assert self.driver.current_url == data.URLS.DZEN_URL
 
 
+    #@pytest.mark.parametrize('user_info, order_info', [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1]])
     @pytest.mark.parametrize('user_info, order_info',
-                              [data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1])
+                             [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1],
+                              [data.DATA.USER_INFO_2, data.DATA.ORDER_INF0_2]])
     #ORDER_INF0_1 = [
     #    '01.12.2023',           # Когда привезти самокат
     #    0,                      # Срок аренды - 1 сутки (индекс от 0 до 6)
@@ -192,20 +194,25 @@ class TestOrderPage:
         assert len(input_fields) == 5
 
         # Вводим дату в поле 'Когда привезти самокат'
-        self.order_page.select_delivery_date()
+        #self.order_page.select_delivery_date()
         #self.order_page.set_delivery_date('01.12.2023')
+        self.order_page.select_delivery_date(order_info[0])
 
         # выбираем срок аренды по индексу (от 0 до 6 - 1-7 суток)
-        self.order_page.select_rent_time()
+        #self.order_page.select_rent_time()
+        self.order_page.select_rent_time(order_info[1])
 
         # Выбираем цвет самоката (поля ввода с индексами 2 и 3)
-        #input_fields[3].click()                                # выбираем цвет 'Черный жемчуг'
-        #input_fields[4].click()                                # выбираем цвет 'Серая безысходность'
-        self.order_page.click_page_element(input_fields[2])     # выбираем цвет 'Черный жемчуг'
-        self.order_page.click_page_element(input_fields[3])     # выбираем цвет 'Серая безысходность'
+        #input_fields[2].click()            # выбираем цвет 'Черный жемчуг'
+        #input_fields[3].click()            # выбираем цвет 'Серая безысходность'
+        if order_info[2]:   # выбираем цвет 'Черный жемчуг'
+            self.order_page.click_page_element(input_fields[2])
+        if order_info[3]:   # выбираем цвет 'Серая безысходность'
+            self.order_page.click_page_element(input_fields[3])
 
         # Вводим комментарий для курьера (поле ввода с индексом 4)
-        self.order_page.set_field_value(input_fields[4], "Позвоните за полчаса")
+        if order_info[4]:
+            self.order_page.set_field_value(input_fields[4], order_info[4])
 
         if data._debug:
             time.sleep(5)
