@@ -47,4 +47,9 @@ ORDER_PAGE_RENT_TIME_ITEM = [By.XPATH, ".//div[@class='Dropdown-option']"]
 
 # кнопка Заказать внизу 2 страницы
 ORDER_PAGE_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[2]"]
+# кнопка подтверждения заказа Да
+ORDER_PAGE_YES_BUTTON = [By.XPATH, ".//button[text()='Да']"]
+# заголовок всплывающего окна Заказ оформлен и кнопка Посмотреть статус
+ORDER_PAGE_ORDER_ACCEPTED_TITLE = [By.XPATH, ".//div[text()='Заказ оформлен']"]
+ORDER_PAGE_ORDER_ACCEPTED_BUTTON = [By.XPATH, ".//button[text()='Посмотреть статус']"]
 

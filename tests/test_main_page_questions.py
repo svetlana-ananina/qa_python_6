@@ -45,6 +45,9 @@ class TestMainPageQuestions:
         # прокручиваем страницу до
         self.main_page.scroll_to_faq_list()
 
+        # ждем появления списка вопросов
+        self.main_page.wait_for_load_questions_list()
+
         # получаем элемент списка вопросов с индексом 'index'
         questions_item = self.main_page.get_questions_item(index)
         if data._debug:
@@ -53,7 +56,8 @@ class TestMainPageQuestions:
         # кликаем вопрос
         questions_item.click()
 
-        print(f'Wait for answer ({index})...')
+        if data._debug:
+            print(f'Wait for answer ({index})...')
         self.main_page.wait_for_load_answer(index)
 
         # получаем соответствующий ответ с тем же индексом

@@ -42,7 +42,6 @@ class TestOrderPage:
     def test_main_page_order_button(self, setup_driver, locator):
         """ Проверяем верхнюю и нижнюю кнопку Заказать на Главной странице """
         # открываем Главную страницу
-        #self.driver.get(data.URLS.MAIN_PAGE_URL)
         self.main_page.open_main_page()
 
         # ждем загрузки главной страницы
@@ -53,8 +52,6 @@ class TestOrderPage:
 
         # прокручиваем страницу до кнопки Заказать
         self.main_page.scroll_to_order_button(locator)
-
-        #if data._debug: time.sleep(5)
 
         # кликаем нижнюю кнопку Заказать
         self.main_page.click_order_button(locator)
@@ -109,7 +106,6 @@ class TestOrderPage:
 
         if data._debug:
             print(f'len(self.driver.window_handles) = {len(self.driver.window_handles)}')
-        #if data._debug: time.sleep(3)
 
         # кликаем кнопку Яндекс
         self.order_page.click_logo_button()
@@ -133,22 +129,13 @@ class TestOrderPage:
         if data._debug:
             print(f'current_url = "{self.driver.current_url}"')
 
-        #if data._debug: time.sleep(3)
-
         assert self.driver.current_url == data.URLS.DZEN_URL
 
 
-    #@pytest.mark.parametrize('user_info, order_info', [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1]])
     @pytest.mark.parametrize('user_info, order_info',
+    #                         [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1]])
                              [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1],
                               [data.DATA.USER_INFO_2, data.DATA.ORDER_INF0_2]])
-    #ORDER_INF0_1 = [
-    #    '01.12.2023',           # Когда привезти самокат
-    #    0,                      # Срок аренды - 1 сутки (индекс от 0 до 6)
-    #    True,                   # Выбрать 1-й цвет
-    #    True,                   # Выбрать 2-й цвет
-    #    "Позвоните за полчаса"  # Комментарий для курьера
-    #]
     def test_order_page_order_placement(self, setup_driver, user_info, order_info):
         """ Проверяем оформление заказа """
         # открываем страницу заказа по URL
@@ -214,11 +201,17 @@ class TestOrderPage:
         if order_info[4]:
             self.order_page.set_field_value(input_fields[4], order_info[4])
 
-        if data._debug:
-            time.sleep(5)
-
+        # Кликаем кнопку Заказать внизу страницы
         self.order_page.click_element(locators.ORDER_PAGE_ORDER_BUTTON)
 
-        if data._debug:
-            time.sleep(5)
+        # ждем появления окна "Хотите оформить заказ?" с кнопкой "Да"
+        self.order_page.wait_visible_element(locators.ORDER_PAGE_YES_BUTTON)
+
+        # кликаем кнопку Да
+        self.order_page.click_element(locators.ORDER_PAGE_YES_BUTTON)
+
+        # ждем всплывающее окно с кнопкой "Посмотреть статус"
+        self.order_page.wait_visible_element(locators.ORDER_PAGE_ORDER_ACCEPTED_BUTTON)
+        # проверяем заголовок всплывающего окна "Заказ оформлен"
+        assert self.order_page.get_element(locators.ORDER_PAGE_ORDER_ACCEPTED_TITLE)
 

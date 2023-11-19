@@ -24,12 +24,12 @@ class OrderPage:
 
     def wait_for_open_order_page(self):
         """ ожидание открытия URL страницы заказа """
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.url_to_be(data.URLS.ORDER_PAGE_URL))
 
     def wait_for_load_order_page(self):
         """ ожидание загрузки страницы заказа (ждем кнопку Далее внизу страницы) """
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.visibility_of_element_located(locators.ORDER_PAGE_NEXT_BUTTON))
 
     #
@@ -42,7 +42,7 @@ class OrderPage:
 
     def wait_for_scooter_button(self):
         """ ожидание кнопки Самокат в хедере """
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.visibility_of_element_located(locators.ORDER_PAGE_SCOOTER_BUTTON))
 
     def click_scooter_button(self):
@@ -51,7 +51,7 @@ class OrderPage:
 
     def wait_for_logo_button(self):
         """ ожидание кнопки Яндекс в хедере """
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.visibility_of_element_located(locators.ORDER_PAGE_LOGO_BUTTON))
 
     def click_logo_button(self):
@@ -67,7 +67,7 @@ class OrderPage:
         """ ждем загрузку страницы в новой вкладке после перехода по клику на логотип Яндекса в хедере """
         WebDriverWait(self.driver, 5).until(
             expected_conditions.url_changes(data.URLS.BLANK_URL))
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.url_to_be(data.URLS.DZEN_URL))
 
     #
@@ -110,7 +110,7 @@ class OrderPage:
     # функции для работы со 2-й страницей оформления заказа
     def wait_for_load_back_button(self):
         """ Ждем загрузки кнопки Назад """
-        WebDriverWait(self.driver, 5).until(
+        return WebDriverWait(self.driver, 5).until(
             expected_conditions.visibility_of_element_located(locators.ORDER_PAGE_BACK_BUTTON))
 
     def set_value(self, locator, value):
@@ -124,8 +124,17 @@ class OrderPage:
 
     def wait_element(self, locator):
         """ ожидание появления элемента в DOM по его локатору """
-        WebDriverWait(self.driver, 3).until(
+        return WebDriverWait(self.driver, 3).until(
             expected_conditions.presence_of_element_located(locator))
+
+    def wait_visible_element(self, locator):
+        """ ожидание появления элемента в DOM по его локатору """
+        return WebDriverWait(self.driver, 3).until(
+            expected_conditions.visibility_of_element_located(locator))
+
+    def get_element(self, locator):
+        """ получить список полей ввода на странице """
+        return self.driver.find_element(*locator)
 
     def click_element(self, locator):
         """ найти элемент в DOM по его локатору и кликнуть """

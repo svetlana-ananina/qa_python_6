@@ -42,9 +42,11 @@ class MainPageQuestions:
     def get_answers_item(self, index):
         return (self.driver.find_elements(*locators.MAIN_PAGE_FAQ_ITEMS))[index]
 
+    def wait_for_load_questions_list(self):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.visibility_of_all_elements_located(locators.MAIN_PAGE_FAQ_LIST))
+
     def wait_for_load_answer(self, index):
-        # $x("(.//div[@class='accordion__panel'])[8]")
-        #xpath = f"(.//div[@class='accordion__panel'])[{index+1}]"
         xpath = locators.MAIN_PAGE_FAQ_ITEM_XPATH.format(index+1)
         if data._debug:
             print(f'XPATH = "{xpath}"')
