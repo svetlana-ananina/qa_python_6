@@ -5,6 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import selenium.webdriver.firefox
 
 import pytest
+import allure
 import time
 
 from pages.main_page_questions import MainPageQuestions
@@ -17,6 +18,7 @@ class TestMainPageQuestions:
     driver = None
     main_page = None
 
+    @allure.step('Открываем браузер Firefox')
     @pytest.fixture()
     def setup_driver(self):
         # создали драйвер для браузера Chrome
@@ -30,9 +32,13 @@ class TestMainPageQuestions:
         self.driver.quit()
 
 
+    @allure.title('Проверка вопросов и ответов на Главной странице')
+    @allure.description('На Главной странице ищем вопросы и проверяем, что по клику открывается соответствующий ответ')
     @pytest.mark.parametrize('index', [0, 1, 2, 3, 4, 5, 6, 7])
-    #@pytest.mark.parametrize('index', [7])
     def test_faq_answers(self, setup_driver, index):
+        """ Проверяем список вопросов и ответов на Главной странице
+            Параметризованный тест для проверки 8-ми вопросов и ответов в блоке 'Вопросы о важном'
+        """
         # Открываем Главную страницу
         self.main_page.open_main_page()
 
@@ -62,25 +68,25 @@ class TestMainPageQuestions:
 
         # получаем соответствующий ответ с тем же индексом
         answers_item = self.main_page.get_answers_item(index)
-        #is_displayed = answers_item.is_displayed()
 
         if data._debug:
+            is_displayed = answers_item.is_displayed()
             print(f'{index}: Ответ: "{answers_item.text}"')
             print(f'is_displayed(): "{answers_item.is_displayed()}"')
 
         # проверяем, что текст вопроса соответствует ожидаемому
         question_expected = data.DATA.QUESTIONS_TEXT[index]
         question_received = questions_item.text
-        assert question_received == question_expected #, f'Вопрос [{index+1}] не соответствует ожидаемому: получен "{question_received}", ожидался "{question_waited}"'
+        assert question_received == question_expected
 
         # проверяем, что текст вопроса соответствует ожидаемому
         answer_expected = data.DATA.ANSWERS_TEXT[index]
         answer_received = answers_item.text
-        assert answer_received == answer_expected   #, f'Вопрос [{index+1}] не соответствует ожидаемому: получен "{answer_received}", ожидался "{answer_waited}"'
+        assert answer_received == answer_expected
 
         # проверяем, что ответ появился на экране
         is_displayed = answers_item.is_displayed()
-        assert is_displayed                         #, f'Ответ [{index+1}] не отображен на экране'
+        assert is_displayed
 
-        #if data._debug: time.sleep(3)
+        if data._debug: time.sleep(3)
 
