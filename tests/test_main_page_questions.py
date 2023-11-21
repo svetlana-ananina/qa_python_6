@@ -56,23 +56,14 @@ class TestMainPageQuestions:
 
         # получаем элемент списка вопросов с индексом 'index'
         questions_item = self.main_page.get_questions_item(index)
-        if data._debug:
-            print(f'{index}:\nВопрос: "{questions_item.text}"')
 
         # кликаем вопрос
         questions_item.click()
 
-        if data._debug:
-            print(f'Wait for answer ({index})...')
         self.main_page.wait_for_load_answer(index)
 
         # получаем соответствующий ответ с тем же индексом
         answers_item = self.main_page.get_answers_item(index)
-
-        if data._debug:
-            is_displayed = answers_item.is_displayed()
-            print(f'{index}: Ответ: "{answers_item.text}"')
-            print(f'is_displayed(): "{answers_item.is_displayed()}"')
 
         # проверяем, что текст вопроса соответствует ожидаемому
         question_expected = data.DATA.QUESTIONS_TEXT[index]
@@ -87,6 +78,4 @@ class TestMainPageQuestions:
         # проверяем, что ответ появился на экране
         is_displayed = answers_item.is_displayed()
         assert is_displayed
-
-        if data._debug: time.sleep(3)
 

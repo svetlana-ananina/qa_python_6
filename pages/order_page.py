@@ -102,7 +102,6 @@ class OrderPage:
 
         # кликаем станцию в списке
         station_xpath = locators.ORDER_PAGE_SELECT_STATION_XPATH.format(index)
-        if data._debug: print(f'station_xpath = "{station_xpath}"')
         self.driver.find_element(By.XPATH, station_xpath).click()
 
     @allure.step('Проверяем название выбранной станции')
@@ -169,27 +168,19 @@ class OrderPage:
 
         # ищем выбранный день в календаре и кликаем по нему
         element = self.driver.find_element(*locators.ORDER_PAGE_DAY_ELEMENT)
-        if data._debug:
-            print(f'element = {element}')
         element.click()
 
     @allure.step('Выбираем срок аренды (index 0-6: {index})')
     def select_rent_time(self, index=0):
         if index not in (0, 1, 2, 3, 4, 5, 6):
-            if data._debug:
-                print(f'select_rent_time: получен неправильный индекс, надо 0-6, получено "{index}"')
             index = 0
         # кликаем поле выбора срока аренды
         element = self.driver.find_element(*locators.ORDER_PAGE_RENT_TIME_FIELD)
-        if data._debug:
-            print(f'element = {element}')
         element.click()
         # ждем загрузку выпадающего списка сроков аренды - от 1 до 7 суток
         self.wait_element(locators.ORDER_PAGE_RENT_TIME_LIST)
         # получаем список кликабельных элементов DOM, соответствующих элементам списка сроков аренды
         elements = self.driver.find_elements(*locators.ORDER_PAGE_RENT_TIME_ITEM)
-        if data._debug:
-            print(f'elements = {len(elements)}')
         # кликаем на нужный срок аренды по его индексу в списке (от 0 до 6)
         elements[index].click()
 

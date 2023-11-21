@@ -62,6 +62,9 @@ class TestOrderPage:
         # прокручиваем страницу до кнопки Заказать
         self.main_page.scroll_to_order_button(locator)
 
+        # загрузку кнопки Заказать
+        self.main_page.wait_for_load_order_button(locator)
+
         # кликаем кнопку Заказать
         self.main_page.click_order_button(locator)
 
@@ -186,31 +189,16 @@ class TestOrderPage:
         # заполняем текстовые поля ввода input, кроме станции метро (индексы 1, 2, 3, 5)
         # информацией из набора данных пользователя
         #for i in {0, 1, 2, 4}:
-        #    self.order_page.set_field_value(input_fields[i+1], user_info[i])
         self.order_page.set_field_value(input_fields[1], user_first_name)
         self.order_page.set_field_value(input_fields[2], user_last_name)
         self.order_page.set_field_value(input_fields[3], user_address)
         self.order_page.set_field_value(input_fields[5], user_telephone)
 
         # выбираем станцию метро из списка по индексу
-        #self.order_page.select_station(user_info[5])
         self.order_page.select_station(user_station_index)
 
-        if data._debug:
-            time.sleep(5)
-
         # проверяем введенные данные в полях
-        first_name = self.order_page.check_field_value(input_fields[1])
-        last_name = self.order_page.check_field_value(input_fields[2])
-        address = self.order_page.check_field_value(input_fields[3])
-        telephone = self.order_page.check_field_value(input_fields[5])
         selected_station = self.order_page.check_station()
-        if data._debug:
-            print(f'first_name = {first_name}')
-            print(f'last_name = {last_name}')
-            print(f'address = {address}')
-            print(f'telephone = {telephone}')
-            print(f'selected_station = {selected_station}')
 
         # Проверяем, что в полях введены данные пользователя
         assert self.order_page.check_field_value(input_fields[1]) == user_first_name
@@ -253,32 +241,19 @@ class TestOrderPage:
 
         # Выбираем цвет самоката (поля ввода с индексами 2 и 3)
         if order_select_black_color:   # выбираем цвет 'Черный жемчуг'
-            #self.order_page.click_page_element(input_fields[2])
             self.order_page.click_element(locators.ORDER_PAGE_COLOR_BLACK_FIELD)
         if order_select_grey_color:   # выбираем цвет 'Серая безысходность'
-            #self.order_page.click_page_element(input_fields[3])
             self.order_page.click_element(locators.ORDER_PAGE_COLOR_GREY_FIELD)
 
         # Вводим комментарий для курьера (поле ввода с индексом 4)
         if order_comment:
-            #self.order_page.set_field_value(input_fields[4], order_comment)
             self.order_page.set_value(locators.ORDER_PAGE_COMMENT_FIELD, order_comment)
-
-        if data._debug:
-            time.sleep(5)
 
         # Получаем введенные данные в полях и проверяем, что они соответствуют данным заказа
         selected_delivery_date = self.order_page.get_value(locators.ORDER_PAGE_DATE_DELIVERY_FIELD)
         selected_rent_time = self.order_page.get_text(locators.ORDER_PAGE_RENT_TIME_VALUE)
-        #value = self.driver.find_element(*locators.ORDER_PAGE_RENT_TIME_VALUE).text
         selected_comment = self.order_page.get_value(locators.ORDER_PAGE_COMMENT_FIELD)
 
-        if data._debug:
-            print(f'selected_delivery_date = "{selected_delivery_date}"')
-            print(f'selected_rent_time = "{selected_rent_time}"')
-            print(f'selected_comment = "{selected_comment}"')
-
-        #assert selected_delivery_date == order_delivery_date
         # Проверяем, что дата выбрана и совпадает с указанной в данных заказа
         assert selected_delivery_date
         if order_delivery_date:
@@ -301,8 +276,6 @@ class TestOrderPage:
         # ждем всплывающее окно с кнопкой "Посмотреть статус"
         self.order_page.wait_visible_element(locators.ORDER_PAGE_ORDER_ACCEPTED_BUTTON)
         # проверяем заголовок всплывающего окна "Заказ оформлен"
-        assert self.order_page.get_element(locators.ORDER_PAGE_ORDER_ACCEPTED_TITLE)
 
-        if data._debug:
-            time.sleep(5)
+        assert self.order_page.get_element(locators.ORDER_PAGE_ORDER_ACCEPTED_TITLE)
 

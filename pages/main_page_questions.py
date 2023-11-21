@@ -43,6 +43,11 @@ class MainPageQuestions:
         element = self.driver.find_element(*locator)
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
+    @allure.step('Ждем загрузку кнопки Заказать')
+    def wait_for_load_order_button(self, locator):
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.visibility_of_element_located(locator))
+
     @allure.step('Кликаем кнопку "Заказать"')
     def click_order_button(self, locator):
         self.driver.find_element(*locator).click()
@@ -70,8 +75,6 @@ class MainPageQuestions:
     @allure.step('Ждем загрузку ответа с номером {index}')
     def wait_for_load_answer(self, index):
         xpath = locators.MAIN_PAGE_FAQ_ITEM_XPATH.format(index+1)
-        if data._debug:
-            print(f'XPATH = "{xpath}"')
         WebDriverWait(self.driver, 10).until(
             expected_conditions.presence_of_element_located((By.XPATH, xpath)))
         WebDriverWait(self.driver, 10).until(

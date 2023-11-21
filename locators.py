@@ -33,9 +33,7 @@ ORDER_PAGE_STATION_VALUE = [By.XPATH, ".//div[@class='select-search__value']/inp
 ORDER_PAGE_BACK_BUTTON = [By.XPATH, ".//button[text()='Назад']"]
 
 # Выбор даты доставки:                                                      # Атрибут value
-#ORDER_PAGE_DATE_DELIVERY_FIELD = [By.XPATH, "(.//input)[2]"]
 ORDER_PAGE_DATE_DELIVERY_FIELD = [By.XPATH, ".//div[@class='react-datepicker__input-container']/input"]
-#ORDER_PAGE_DATE_DELIVERY_FIELD = [By.XPATH, ".//input[placeholder='* Когда привезти самокат']"]
 # Элементы в календаре для выбора кликом
 ORDER_PAGE_WEEK_ELEMENT = [By.XPATH, ".//div[@class='react-datepicker__week']"]
 ORDER_PAGE_DAY_ELEMENT = [By.CSS_SELECTOR, ".react-datepicker__day[tabindex='0']"]
@@ -48,15 +46,11 @@ ORDER_PAGE_RENT_TIME_ITEM = [By.XPATH, ".//div[@class='Dropdown-option']"]
 # цвет самоката: 3 и 4 поля ввода:                                          # text()
 ORDER_PAGE_COLOR_BLACK_FIELD = [By.XPATH, "(.//input)[3]"]
 ORDER_PAGE_COLOR_GREY_FIELD = [By.XPATH, "(.//input)[4]"]
-#ORDER_PAGE_COLOR_BLACK_FIELD = [By.XPATH, ".//input[id='black']"]
-#ORDER_PAGE_COLOR_GREY_FIELD = [By.XPATH, ".//input[id='grey']"]
 
 # комментарий для курьера (5 поле ввода):                                   # Атрибут value
 ORDER_PAGE_COMMENT_FIELD = [By.XPATH, "(.//input)[5]"]
-#ORDER_PAGE_COMMENT_FIELD = [By.XPATH, ".//input[placeholder='Комментарий для курьера']"]
 
 # Поле с выбранным сроком аренды для проверки:                              # text()
-#ORDER_PAGE_RENT_TIME_VALUE = [By.XPATH, ".//div[@class='Dropdown-placeholder is-selected']"]
 ORDER_PAGE_RENT_TIME_VALUE = [By.XPATH, ".//div[@class='Dropdown-placeholder is-selected']"]
 
 # кнопка Заказать внизу 2 страницы
