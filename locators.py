@@ -1,10 +1,49 @@
 from selenium.webdriver.common.by import By
 
 
-MAIN_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
-BASE_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
+class BasePageLocators:
+    # Хедер
+    SCOOTER_BUTTON = [By.XPATH, ".//a[@href='/']"]
+    LOGO_BUTTON = [By.XPATH, ".//a[@href='//yandex.ru']"]
+    # Куки
+    COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
 
-MAIN_PAGE_FAQ_LIST = [By.CLASS_NAME, "accordion"]
+
+class MainPageLocators:
+    FAQ_LIST = [By.CLASS_NAME, "accordion"]
+    FAQ_BUTTONS = [By.CLASS_NAME, "accordion__button"]
+    FAQ_ITEMS = [By.XPATH, ".//div[@class='accordion__panel']/p"]
+    FAQ_ITEM_XPATH = "(.//div[@class='accordion__panel'])[{}]"
+
+
+# Страница заказа
+class OrderPageLocators:
+
+    # 1-я страница
+    NEXT_BUTTON = [By.XPATH, ".//button[text()='Далее']"]
+    INPUT_FIELDS = [By.XPATH, ".//input"]
+    STATION_FIELD = [By.XPATH, ".//div[@class='select-search']"]
+    SELECT_STATION_LIST = [By.XPATH, ".//div[@class='select-search__select']"]
+    SELECT_STATION_XPATH = ".//ul/li/button[@value='{}']"
+    # Поле с выбранной станции для проверки:                    # Атрибут value
+    SELECTED_STATION_VALUE = [By.XPATH, ".//div[@class='select-search__value']/input"]
+    # 2-я страница
+    BACK_BUTTON = [By.XPATH, ".//button[text()='Назад']"]
+    # Выбор даты доставки:                                      # Атрибут value
+    DATE_DELIVERY_FIELD = [By.XPATH, ".//div[@class='react-datepicker__input-container']/input"]
+    # Элементы в календаре для выбора кликом
+    WEEK_ELEMENT = [By.XPATH, ".//div[@class='react-datepicker__week']"]
+    DAY_ELEMENT = [By.CSS_SELECTOR, ".react-datepicker__day[tabindex='0']"]
+    # Выбор срока аренды
+    RENT_TIME_FIELD = [By.XPATH, ".//div[@class='Dropdown-control']"]
+    RENT_TIME_LIST = [By.XPATH, ".//div[@class='Dropdown-menu']"]
+    RENT_TIME_ITEM = [By.XPATH, ".//div[@class='Dropdown-option']"]
+
+
+#################################
+#MAIN_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
+#BASE_PAGE_COOKIE_BUTTON = [By.ID, "rcc-confirm-button"]
+
 MAIN_PAGE_FAQ_BUTTONS = [By.CLASS_NAME, "accordion__button"]
 MAIN_PAGE_FAQ_ITEMS = [By.XPATH, ".//div[@class='accordion__panel']/p"]
 MAIN_PAGE_FAQ_ITEM_XPATH = "(.//div[@class='accordion__panel'])[{}]"

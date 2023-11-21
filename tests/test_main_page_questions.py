@@ -31,7 +31,6 @@ class TestMainPageQuestions:
         # закрываем драйвер после использования
         self.driver.quit()
 
-
     @allure.title('Проверка вопросов и ответов на Главной странице')
     @allure.description('На Главной странице ищем вопросы и проверяем, что по клику открывается соответствующий ответ')
     @pytest.mark.parametrize('index', [0, 1, 2, 3, 4, 5, 6, 7])
@@ -40,7 +39,8 @@ class TestMainPageQuestions:
             Параметризованный тест для проверки 8-ми вопросов и ответов в блоке 'Вопросы о важном'
         """
         # Открываем Главную страницу
-        self.main_page.open_main_page()
+        #self.main_page.open_main_page()
+        self.main_page.open_page()
 
         # ждем загрузки главной страницы
         self.main_page.wait_for_load_main_page()
