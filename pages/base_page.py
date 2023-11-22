@@ -10,18 +10,16 @@ import allure
 #import data
 from locators import BasePageLocators as base_page_locators
 from data import URLS as urls
-from data import DATA as dat
 
 
 class BasePage:
     """ Базовый класс для классов страниц - Главной страницы и страницы заказа """
-    page_url = None     # URL страницы, передается в конструкторе
 
-    def __init__(self, driver, page_url):
-        self.driver = driver
-        self.page_url = page_url
+    def __init__(self, new_driver, new_page_url):
+        self.driver = new_driver
+        self.page_url = new_page_url
 
-    @allure.step('Открываем страницу {self.page_url}')
+    @allure.step('Открываем страницу по URL {self.page_url}')
     def open_page(self):
         self.driver.get(self.page_url)
 

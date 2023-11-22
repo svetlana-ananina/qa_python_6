@@ -7,21 +7,24 @@ import pytest
 import allure
 import time
 
-#import locators
-#import data
-from base_page import BasePage
+from pages.base_page import BasePage
 from locators import BasePageLocators as base_page_locators
 from locators import MainPageLocators as main_page_locators
 from data import URLS as urls
-from data import DATA as dat
+#from data import DATA as dat
+from data import MainPageData as dat
 
 
 class MainPageQuestions(BasePage):
     """ Класс Главной страницы """
 
     def __init__(self, driver):
-        #self.driver = driver
         BasePage.__init__(self, driver, urls.MAIN_PAGE_URL)
+
+    #def __init__(self, driver, page_url):
+        #self.driver = driver
+        #BasePage.__init__(self, driver, page_url)
+    #    super().__init__(self, driver, page_url)
 
     #@allure.step('Открываем Главную страницу')
     #def open_main_page(self):
