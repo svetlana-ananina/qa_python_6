@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
@@ -9,154 +8,33 @@ import pytest
 import allure
 import time
 
-from pages.main_page_questions import MainPageQuestions
+from pages.base_page import BasePage
 from pages.order_page import OrderPage
-import data
-import locators
+from data import URLS as urls
+from data import OrderPageData as opdat
+
+from locators import MainPageLocators as mploc
+from locators import OrderPageLocators as oploc
+from locators import BasePageLocators as bploc
 
 
 class TestOrderPage:
 
-    driver = None
-    main_page = None
-    order_page = None
-
-
-    @allure.step('Открываем браузер Firefox')
-    @pytest.fixture()
-    def setup_driver(self):
-        # создали драйвер для браузера Firefox
-        self.driver = webdriver.Firefox()
-
-        # создаем объект класса Главная страница
-        self.main_page = MainPageQuestions(self.driver)
-
-        # создаем объект класса страница заказа
-        self.order_page = OrderPage(self.driver)
-
-        yield
-
-        # закрываем драйвер
-        self.driver.quit()
-
-
-    @allure.title('Проверка двух кнопок "Заказать" на Главной странице')
-    @allure.description('На Главной странице ищем кнопку "Заказать" и проверяем, что по клику открывается страница заказа')
-    @pytest.mark.parametrize('locator', [locators.MAIN_PAGE_HEADER_ORDER_BUTTON,
-                                         locators.MAIN_PAGE_FOOTER_ORDER_BUTTON])
-    def test_main_page_order_button(self, setup_driver, locator):
-        """ Проверяем кнопки 'Заказать' на Главной странице
-            Параметризованный тест для проверки двух кнопок 'Заказать':
-            - в хедере Главной страницы
-            - внизу Главной страницы
-        """
-        # открываем Главную страницу
-        self.main_page.open_main_page()
-
-        # ждем загрузки главной страницы
-        self.main_page.wait_for_load_main_page()
-
-        # кликаем согласие с куками
-        self.main_page.click_accept_cookies_button()
-
-        # прокручиваем страницу до кнопки Заказать
-        self.main_page.scroll_to_order_button(locator)
-
-        # загрузку кнопки Заказать
-        self.main_page.wait_for_load_order_button(locator)
-
-        # кликаем кнопку Заказать
-        self.main_page.click_order_button(locator)
-
-        # ждем перехода на страницу заказа
-        self.order_page.wait_for_open_order_page()
-
-        # проверяем, что открылся URL страницы заказа
-        assert self.driver.current_url == data.URLS.ORDER_PAGE_URL
-
-
-    @allure.title('Проверка клика по логотипу Самокат на странице заказа')
-    @allure.description('На странице заказа ищем кнопку "Самокат" и проверяем, что по клику открывается Главная страница')
-    def test_order_page_scooter_button(self, setup_driver):
+    @allure.title('Проверка позитивного сценария оформления заказа с 2мя наборами данных')
+    @pytest.mark.parametrize('user_info, order_info', [[opdat.USER_1, opdat.ORDER_1], [opdat.USER_2, opdat.ORDER_2]])
+    def test_order_page(self, setup_driver, user_info, order_info):
         """ Проверяем кнопку Самокат в хедере страницы заказа """
         # открываем страницу заказа по URL
-        self.order_page.open_order_page()
-
-        # ждем загрузки страницы заказа
-        self.order_page.wait_for_load_order_page()
-
-        # кликаем согласие с куки
-        self.order_page.click_accept_cookies_button()
-
-        # кликаем кнопку Самокат
-        self.order_page.click_scooter_button()
-
-        # ждем загрузки главной страницы
-        self.main_page.wait_for_open_main_page()
-
-        # ждем загрузки главной страницы
-        self.main_page.wait_for_load_main_page()
-
-        # проверяем, что открылся URL Главной страницы
-        assert self.driver.current_url == data.URLS.MAIN_PAGE_URL
+        driver = setup_driver
+        order_page = OrderPage(driver)
+        order_page.open_order_page()
 
 
-    @allure.title('Проверка клика по логотипу Яндекса на странице заказа')
-    @allure.description('На странице заказа ищем кнопку "Яндекс" и проверяем, '
-                        'что по клику в новом окне через редирект открывается главная страница Дзена')
-    def test_order_page_logo_button(self, setup_driver):
-        """ Проверяем кнопку Яндекс в хедере страницы заказа """
-        # открываем страницу заказа по URL
-        self.order_page.open_order_page()
-
-        # ждем загрузки страницы заказа
-        self.order_page.wait_for_load_order_page()
-
-        # кликаем согласие с куки
-        self.order_page.click_accept_cookies_button()
-
-        # кликаем кнопку Яндекс
-        self.order_page.click_logo_button()
-
-        # Проверяем что открылась новая вкладка
-        assert len(self.driver.window_handles) > 1
-
-        # переключаемся на новую вкладку
-        self.order_page.switch_to_new_window()
-
-        # ждем загрузки на новой вкладке страницы Яндекс Дзен редирект
-        self.order_page.wait_for_new_window()
-
-        assert self.driver.current_url == data.URLS.DZEN_URL
-
-
-    @allure.title('Проверка позитивного сценария оформления заказа с 2мя наборами данных')
-    @allure.description('Нажать кнопку заказать на Главной странице, заполнить форму заказа и проверить, '
-                        'что появилось всплывающее окно с сообщением об успешном оформлении заказа')
-    @pytest.mark.parametrize('user_info, order_info',
-                             [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1],
-                              [data.DATA.USER_INFO_2, data.DATA.ORDER_INF0_2]])
+    #@allure.title('Проверка позитивного сценария оформления заказа с двумя наборами данных')
+    #@pytest.mark.parametrize('user_info, order_info',
+    #                         [[data.DATA.USER_INFO_1, data.DATA.ORDER_INF0_1],
+    #                          [data.DATA.USER_INFO_2, data.DATA.ORDER_INF0_2]])
     def test_order_page_order_placement(self, setup_driver, user_info, order_info):
-        """ Проверяем позитивный сценарий всего процесса оформление заказа.
-            Параметризованный тест для проверки двух наборов данных. Пример данных клиента и заказа:
-            USER_INFO_1 = [
-                    'Иван',
-                    'Иванов',
-                    'Москва, Русаковская улица, 22',
-                    'Сокольники',
-                    '+79999999999',
-                    4                       # индекс станции Сокольники в списке
-            ]
-
-            ORDER_INF0_1 = [
-                    '01.12.2023',           # Когда привезти самокат
-                    0,                      # Срок аренды - 1 сутки (индекс от 0 до 6)
-                    True,                   # Выбрать 1-й цвет
-                    True,                   # Выбрать 2-й цвет
-                    "Позвоните за полчаса", # Комментарий для курьера
-                    "сутки"                 # Текст в поле срок аренды после выбора
-            ]
-        """
         # Получаем данные пользователя из user_info
         user_first_name = user_info[0]
         user_last_name = user_info[1]
@@ -174,6 +52,7 @@ class TestOrderPage:
         # кликаем согласие с куки
         self.order_page.click_accept_cookies_button()
 
+        # 1-я страница заказа - данные пользователя
         # получаем список полей ввода: 6 (индексы 0-5)
         #   0 - статус заказа (не используется в тесте)
         #   1 - имя пользователя

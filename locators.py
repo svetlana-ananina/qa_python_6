@@ -10,10 +10,13 @@ class BasePageLocators:
 
 
 class MainPageLocators:
+    # Локаторы для работы с блоком вопросов и ответов на Главной странице
     FAQ_LIST = [By.CLASS_NAME, "accordion"]
-    FAQ_BUTTONS = [By.CLASS_NAME, "accordion__button"]
-    FAQ_ITEMS = [By.XPATH, ".//div[@class='accordion__panel']/p"]
-    FAQ_ITEM_XPATH = "(.//div[@class='accordion__panel'])[{}]"
+    FAQ_QUESTION = [By.XPATH, "(.//div[@class='accordion__button'])[{}]"]
+    FAQ_ANSWER = [By.XPATH, "(.//div[@class='accordion__panel'])[{}]"]
+    # Локаторы для работы со страницей заказа
+    HEADER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[1]"]
+    FOOTER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[2]"]
 
 
 # Страница заказа
@@ -21,9 +24,17 @@ class OrderPageLocators:
 
     # 1-я страница
     NEXT_BUTTON = [By.XPATH, ".//button[text()='Далее']"]
-    INPUT_FIELDS = [By.XPATH, ".//input"]
+    INPUT_FIELDS = [By.XPATH, "(.//input)[{}]"]
     STATION_FIELD = [By.XPATH, ".//div[@class='select-search']"]
     SELECT_STATION_LIST = [By.XPATH, ".//div[@class='select-search__select']"]
+    #SELECT_STATION_XPATH = ".//ul/li/button[@value='{}']"
+    SELECT_STATION_BUTTON = [By.XPATH, ".//ul/li/button[@value='{}']"]
+
+
+
+
+
+    #INPUT_FIELDS = [By.XPATH, ".//input"]
     SELECT_STATION_XPATH = ".//ul/li/button[@value='{}']"
     # Поле с выбранной станции для проверки:                    # Атрибут value
     SELECTED_STATION_VALUE = [By.XPATH, ".//div[@class='select-search__value']/input"]
@@ -51,7 +62,6 @@ MAIN_PAGE_FAQ_ITEM_XPATH = "(.//div[@class='accordion__panel'])[{}]"
 MAIN_PAGE_ORDER_BUTTONS = [By.XPATH, ".//button[text()='Заказать']"]
 MAIN_PAGE_HEADER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[1]"]
 MAIN_PAGE_FOOTER_ORDER_BUTTON = [By.XPATH, "(.//button[text()='Заказать'])[2]"]
-
 # Страница заказа
 # Хедер
 ORDER_PAGE_SCOOTER_BUTTON = [By.XPATH, ".//a[@href='/']"]
