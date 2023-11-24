@@ -18,10 +18,12 @@ from locators import BasePageLocators as bploc
 class TestOrderButtons:
 
     @allure.title('Проверка клика по двум кнопкам "Заказать на Главной странице')
+    @allure.description('Проверяем, что при клике по кнопке Заказать на Главной странице'
+                        'открывается страница заказа')
     @pytest.mark.parametrize('locator', [mploc.HEADER_ORDER_BUTTON, mploc.FOOTER_ORDER_BUTTON])
-    def test_faq_questions_and_answers(self, setup_driver, locator):
-        """ Проверяем список вопросов и ответов на Главной странице
-            Параметризованный тест для проверки 8-ми вопросов и ответов в блоке 'Вопросы о важном'
+    def test_order_button(self, setup_driver, locator):
+        """ Проверка клика по кнопке Заказать на Главной странице.
+            Параметризованный тест для двух кнопок Заказать: в хедере и внизу Главной страницы.
         """
         # Открываем Главную страницу
         driver = setup_driver
