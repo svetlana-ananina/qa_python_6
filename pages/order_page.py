@@ -33,9 +33,14 @@ class OrderPage(BasePage):
         # кликаем согласие с куки
         self.click_accept_cookies_button()
 
+    @allure.step('ждем загрузку страницы заказа')
+    def wait_for_open_order_page(self):
+        # ждем загрузку страницы заказа
+        self.wait_for_load_element(oploc.NEXT_BUTTON)
+
 
     # Методы для работы с формой данных пользователя
-    @allure.step('Вводим данные пользователя в форму 1ой на странице заказа {user_info}')
+    @allure.step('Вводим данные в форму "Для кого самокат" на странице заказа: {user_info}')
     def create_user(self, user_info):
         # поля ввода input в форме данных о пользователе на странице заказа: 6 (индексы 1-6)
         #   1 - статус заказа (не используется в тесте)
@@ -64,12 +69,12 @@ class OrderPage(BasePage):
 
     @allure.step('Получаем значение поля ввода input с номером {index}')
     def check_input_value(self, index):
-        """ Вспомогательная функция: получить значение пол input по его индексу """
+        """ Вспомогательная функция: получить значение поля input по его индексу """
         method, locator = oploc.INPUT_FIELDS
         locator = locator.format(index)
         return self.find_element((method, locator)).get_attribute("value")
 
-    @allure.step('Выбираем станцию из списка по индексу {index}')
+    @allure.step('Выбираем станцию из списка по индексу: {index}')
     def select_station(self, index):
         # кликаем поле выбора станции
         self.click_element(oploc.STATION_FIELD)
@@ -88,7 +93,7 @@ class OrderPage(BasePage):
 
 
     # Методы для работы с формой данных о заказе
-    @allure.step('Вводим данные о заказе в форму 2ой на странице заказа {order_info}')
+    @allure.step('Вводим данные в форму "Про аренду" на странице заказа {order_info}')
     def create_order(self, order_info):
         # Выбираем дату в поле 'Когда привезти самокат'
         self.select_delivery_date(order_info['delivery_date'])

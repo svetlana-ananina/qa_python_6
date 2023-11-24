@@ -9,7 +9,11 @@ import allure
 import time
 
 from pages.base_page import BasePage
+from pages.main_page import MainPage
+from pages.order_page import OrderPage
 from data import URLS as urls
+from data import OrderPageData as opdat
+from data import MainPageData as mpdat
 from locators import MainPageLocators as mploc
 from locators import OrderPageLocators as oploc
 from locators import BasePageLocators as bploc
@@ -25,25 +29,27 @@ class TestOrderButtons:
         """ Проверка клика по кнопке Заказать на Главной странице.
             Параметризованный тест для двух кнопок Заказать: в хедере и внизу Главной страницы.
         """
-        # Открываем Главную страницу
+        # Открываем окно веб-браузера и инициализируем класс POM для Главной страницы
         driver = setup_driver
-        base_page = BasePage(driver)
-        base_page.open_page(urls.MAIN_PAGE_URL)
+        main_page = MainPage(driver)
 
-        # ждем загрузку на Главной странице кнопки "Заказать"
-        base_page.wait_for_load_element(locator)
-
-        # кликаем согласие с куки
-        base_page.click_accept_cookies_button()
+        # Открываем Главную страницу
+        main_page.open_main_page()
 
         # прокручиваем страницу до кнопки "Заказать"
-        base_page.scroll_to_element(locator)
+        main_page.scroll_to_element(locator)
 
         # ждем загрузку кнопки Заказать
-        base_page.wait_for_load_element(locator)
+        main_page.wait_for_load_element(locator)
 
         # кликаем кнопку Заказать
-        base_page.click_element(locator)
+        main_page.click_element(locator)
+
+        # ждем что открылось страница оформления заказа с формой "Для кого самокат"
+        main_page.wait_for_load_element(oploc.FORM1_TITLE)
+
+        # проверяем заголовок формы: "Для кого самокат"
+        assert opdat.FORM1_TITLE_TEXT in main_page.check_text(oploc.FORM1_TITLE)
 
         # проверяем, что открылся URL страницы заказа
         assert driver.current_url == urls.ORDER_PAGE_URL
@@ -52,50 +58,49 @@ class TestOrderButtons:
     @allure.description('На странице заказа ищем кнопку "Самокат" и проверяем, что по клику открывается Главная страница')
     def test_order_page_scooter_button(self, setup_driver):
         """ Проверяем кнопку Самокат в хедере страницы заказа """
-        # открываем страницу заказа по URL
+        # Открываем окно веб-браузера и инициализируем класс POM для страницы заказа
         driver = setup_driver
-        base_page = BasePage(driver)
-        base_page.open_page(urls.ORDER_PAGE_URL)
+        order_page = OrderPage(driver)
 
-        # ждем загрузки страницы заказа
-        base_page.wait_for_load_element(oploc.NEXT_BUTTON)
-
-        # кликаем согласие с куки
-        base_page.click_accept_cookies_button()
+        # Открываем страницу заказа
+        order_page.open_order_page()
 
         # кликаем кнопку Самокат
-        base_page.click_element(bploc.SCOOTER_BUTTON)
+        order_page.click_element(bploc.SCOOTER_BUTTON)
+
+        # ждем что открылось Главная страница
+        order_page.wait_for_load_element(mploc.FAQ_LIST)
+
+        # проверяем заголовок Главной страницы
+        assert mpdat.TITLE_TEXT in order_page.check_text(mploc.PAGE_TITLE)
 
         # проверяем, что открылся URL Главной страницы
         assert driver.current_url == urls.MAIN_PAGE_URL
+
 
     @allure.title('Проверка клика по логотипу Яндекса на странице заказа')
     @allure.description('На странице заказа ищем кнопку "Яндекс" и проверяем, '
                         'что по клику в новом окне через редирект открывается главная страница Дзен')
     def test_order_page_logo_button(self, setup_driver):
         """ Проверяем кнопку Яндекс в хедере страницы заказа """
-        # открываем страницу заказа по URL
+        # Открываем окно веб-браузера и инициализируем класс POM для страницы заказа
         driver = setup_driver
-        base_page = BasePage(driver)
-        base_page.open_page(urls.ORDER_PAGE_URL)
+        order_page = OrderPage(driver)
 
-        # ждем загрузки страницы заказа
-        base_page.wait_for_load_element(oploc.NEXT_BUTTON)
-
-        # кликаем согласие с куки
-        base_page.click_accept_cookies_button()
+        # Открываем страницу заказа
+        order_page.open_order_page()
 
         # кликаем кнопку Яндекс
-        base_page.click_element(bploc.LOGO_BUTTON)
+        order_page.click_element(bploc.LOGO_BUTTON)
 
         # Проверяем что открылась новая вкладка
-        assert len(driver.window_handles) > 1
+        assert order_page.check_new_window()
 
         # переключаемся на новую вкладку
-        base_page.switch_to_new_window()
+        order_page.switch_to_new_window()
 
         # ждем загрузку в новой вкладке главной страницы Дзен через редирект
-        base_page.wait_for_new_window(urls.DZEN_URL)
+        order_page.wait_for_new_window(urls.DZEN_URL)
 
         # проверяем что открылась главная страница Дзен через редирект
         assert driver.current_url == urls.DZEN_URL

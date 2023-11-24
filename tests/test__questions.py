@@ -12,8 +12,8 @@ from pages.base_page import BasePage
 from pages.main_page import MainPage
 from data import MainPageData as mpdat
 from data import URLS as urls
-from locators import BasePageLocators as base_page_locators
-from locators import MainPageLocators as main_page_locators
+from locators import BasePageLocators as bploc
+from locators import MainPageLocators as mploc
 
 
 class TestMainPageQuestions:
@@ -25,22 +25,18 @@ class TestMainPageQuestions:
         """ Проверяем список вопросов и ответов на Главной странице
             Параметризованный тест для проверки 8-ми вопросов и ответов в блоке 'Вопросы о важном'
         """
-        # Открываем Главную страницу
+        # Открываем окно веб-браузера и инициализируем класс POM для Главной страницы
         driver = setup_driver
         main_page = MainPage(driver)
-        main_page.open_page(urls.MAIN_PAGE_URL)
 
-        # ждем загрузку Главной страницы
-        main_page.wait_for_load_element(main_page_locators.FAQ_LIST)
-
-        # кликаем согласие с куки
-        main_page.click_accept_cookies_button()
+        # Открываем Главную страницу
+        main_page.open_main_page()
 
         # прокручиваем страницу до списка вопросов
-        main_page.scroll_to_element(main_page_locators.FAQ_LIST)
+        main_page.scroll_to_element(mploc.FAQ_LIST)
 
         # ждем появления списка вопросов
-        main_page.wait_for_load_all_elements(main_page_locators.FAQ_LIST)
+        main_page.wait_for_load_all_elements(mploc.FAQ_LIST)
 
         # кликаем вопрос с номером 'index'
         question_received = main_page.click_on_question(index)

@@ -20,11 +20,10 @@ from locators import BasePageLocators as bploc
 class TestOrderPage:
 
     @allure.title('Проверка заполнения данных пользователя на странице оформления заказа')
-    @allure.description('Заполняем форму данных пользователя на странице оформления заказа'
+    @allure.description('Заполняем форму "Для кого самокат" на странице оформления заказа'
                         ' и проверяем введенные данные: {user_info}')
     @pytest.mark.parametrize('user_info, order_info', [[opdat.USER_1, opdat.ORDER_1], [opdat.USER_2, opdat.ORDER_2]])
     def test_order_page_form_1(self, setup_driver, user_info, order_info):
-    #def test_order_page_form_1(self, setup_driver, user_info=opdat.USER_1):
         """ Позитивный сценарий оформления заказа: заполнение формы данных пользователя.
             Параметризованный тест для двух наборов данных пользователя.
         """
@@ -50,12 +49,11 @@ class TestOrderPage:
         assert order_page.check_input_value(6) == user_info['tel_number']
 
 
-    @allure.title('Проверка заполнения данных о заказе на странице оформления заказа')
-    @allure.description('Заполняем форму данных о заказе на странице оформления заказа'
+    @allure.title('Проверка заполнения данных об аренде на странице оформления заказа')
+    @allure.description('Заполняем форму "Про аренду" на странице оформления заказа'
                         ' и проверяем введенные данные: {order_info}')
     @pytest.mark.parametrize('user_info, order_info', [[opdat.USER_1, opdat.ORDER_1], [opdat.USER_2, opdat.ORDER_2]])
     def test_order_page_form_2(self, setup_driver, user_info, order_info):
-    #def test_order_page_form_2(setup_driver, user_info, order_info):
         """ Позитивный сценарий оформления заказа: заполнения формы данных о заказе.
             Параметризованный тест для двух наборов данных пользователя и заказа.
         """
@@ -102,12 +100,12 @@ class TestOrderPage:
 
         # Кликаем кнопку "Заказать" внизу страницы
         order_page.click_element(oploc.ORDER_BUTTON)
-        # ждем появления окна "Хотите оформить заказ?" с кнопкой "Да"
+        # ждем появления окна "Хотите оформить заказ?"
         order_page.wait_for_load_element(oploc.ORDER_CONFIRM)
         # кликаем кнопку 'Да"
         order_page.click_element(oploc.YES_BUTTON)
-        # ждем всплывающее окно об успешном оформлении заказа с кнопкой "Посмотреть статус"
+        # ждем всплывающее окно об успешном оформлении заказа
         order_page.wait_for_load_element(oploc.ORDER_COMPLETED)
         # проверяем заголовок всплывающего окна "Заказ оформлен"
-        assert opdat.ORDER_CONFIRM_TITLE in order_page.check_text(oploc.ORDER_COMPLETED)
+        assert opdat.ORDER_CONFIRM_TITLE_TEXT in order_page.check_text(oploc.ORDER_COMPLETED)
 

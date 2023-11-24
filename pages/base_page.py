@@ -16,6 +16,7 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
+    # Общие методы для работы со страницами
     def open_page(self, page_url):
         """ Открываем страницу по URL {page_url} """
         self.driver.get(page_url)
@@ -48,10 +49,23 @@ class BasePage:
         """ Ищем все элементы HTML по локатору {locator} """
         return self.driver.find_elements(*locator)
 
-    @allure.step('Кликаем элемент HTML по локатору {locator}')
     def click_element(self, locator):
+        """ Кликаем элемент по локатору {locator} """
         self.driver.find_element(*locator).click()
 
+    def set_value(self, locator, value):
+        """ Вводим текст в поле по локатору: {locator} """
+        self.driver.find_element(*locator).send_keys(value)
+
+    def check_value(self, locator):
+        """ Получаем значение поля по локатору: {locator} """
+        return self.driver.find_element(*locator).get_attribute("value")
+
+    def check_text(self, locator):
+        """ Получаем текст в поле по локатору: {locator} """
+        return self.driver.find_element(*locator).text
+
+    # Специальные методы для работы со страницами
     @allure.step('Кликаем согласие с куки')
     def click_accept_cookies_button(self):
         self.driver.find_element(*base_page_locators.COOKIE_BUTTON).click()
@@ -61,6 +75,10 @@ class BasePage:
         """ Прокручиваем страницу до элемента по локатору {locator} """
         element = self.driver.find_element(*locator)
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
+
+    @allure.step('Проверяем что открылась новая вкладка')
+    def check_new_window(self):
+        return len(self.driver.window_handles) > 1
 
     @allure.step('Переключаемся на новую вкладку')
     def switch_to_new_window(self):
@@ -74,17 +92,5 @@ class BasePage:
             expected_conditions.url_changes(urls.BLANK_URL))
         return WebDriverWait(self.driver, 5).until(
             expected_conditions.url_to_be(new_url))
-
-    def set_value(self, locator, value):
-        """ Вводим текст в поле по локатору: {locator} """
-        self.driver.find_element(*locator).send_keys(value)
-
-    def check_value(self, locator):
-        """ Получаем значение поля по локатору: {locator} """
-        return self.driver.find_element(*locator).get_attribute("value")
-
-    def check_text(self, locator):
-        """ Получаем текст в поле по локатору: {locator} """
-        return self.driver.find_element(*locator).text
 
 
